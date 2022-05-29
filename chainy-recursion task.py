@@ -49,25 +49,9 @@ def hyperloop(xdown, xup, ydown, yup, h, leng, G, s_list, pt):
                     # для оптимизации
                     if cell_list != [] and cell_list.count(cell) != 0 or not(cell in s_list):
                         continue
-                    # if xrz == xup and yrz == ydown:  # попало в мерзкий нижний угол
-                    #     if not ((cell - 1 - leng) in cell_list):
-                    #         cell_list.append(cell - 1 - leng)
                     elif yrz == ydown:  # случай попадения на нижнюю строку
                         if not ((cell - leng) in cell_list):
                             cell_list.append(cell - leng)
-                    # elif yrz % h == 0 and xrz == xup:  # случай попадения на строку и край х
-                    #     if not ((cell - 1) in cell_list):
-                    #         cell_list.append(cell - 1)
-                    #     if not ((cell - 1 - leng) in cell_list):
-                    #         cell_list.append(cell - leng - 1)
-                    # elif xrz == xup:  # случай попадения на столбец
-                    #     if not ((cell - 1) in cell_list):
-                    #         cell_list.append(cell - 1)
-                    # elif xrz % h == 0 and xrz != xup:  # попал на столбец
-                    #     if not ((cell - 1) in cell_list):
-                    #         cell_list.append(cell - 1)
-                    #     if not (cell in cell_list):
-                    #         cell_list.append(cell)
                     elif xrz == xdown:  # попал на левую границу
                         if not ((cell+1) in cell_list):
                             cell_list.append(cell+1)
@@ -115,7 +99,7 @@ else:
     h = 0.5
     # number of iteration
     iterc = 6
-    #кол-во точек из таблицы в строке - ТОЧНОСТЬ
+#кол-во точек из таблицы в строке - ТОЧНОСТЬ
     pointcounter = 10
 
 # задаем таймер
@@ -152,8 +136,6 @@ for gh in range(1, (iterc+1)):
     h *= 0.5
     lengx *= 2
     pointcounter -= 1
-    # lengy *= 2
-    # sq = lengx*lengy
     print(gh, " iteration is done! Time elapsed: ", (time.time() - start_time))
 
 plt.show()
