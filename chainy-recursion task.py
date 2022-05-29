@@ -2,6 +2,7 @@ import time
 import matplotlib.pyplot as plt
 import networkx as nx
 import matplotlib.patches as patches
+import math as m
 
 # julian presentation
 a = 0.0
@@ -44,32 +45,32 @@ def hyperloop(xdown, xup, ydown, yup, h, leng, G, s_list, pt):
                     # случай вылета за рамки
                     if xrz < xdown or xrz > xup or yrz < ydown or yrz > yup:
                         continue
-                    cell = (((yup - yrz) / h) // 1) * leng + ((xrz - xdown) / h) // 1 + 1
+                    cell = m.floor(((yup - yrz) / h)) * leng + m.ceil((xrz - xdown) / h) // 1 + 1
                     # для оптимизации
                     if cell_list != [] and cell_list.count(cell) != 0 or not(cell in s_list):
                         continue
-                    if xrz == xup and yrz == ydown:  # попало в мерзкий нижний угол
-                        if not ((cell - 1 - leng) in cell_list):
-                            cell_list.append(cell - 1 - leng)
+                    # if xrz == xup and yrz == ydown:  # попало в мерзкий нижний угол
+                    #     if not ((cell - 1 - leng) in cell_list):
+                    #         cell_list.append(cell - 1 - leng)
                     elif yrz == ydown:  # случай попадения на нижнюю строку
                         if not ((cell - leng) in cell_list):
                             cell_list.append(cell - leng)
-                    elif yrz % h == 0 and xrz == xup:  # случай попадения на строку и край х
-                        if not ((cell - 1) in cell_list):
-                            cell_list.append(cell - 1)
-                        if not ((cell - 1 - leng) in cell_list):
-                            cell_list.append(cell - leng - 1)
-                    elif xrz == xup:  # случай попадения на столбец
-                        if not ((cell - 1) in cell_list):
-                            cell_list.append(cell - 1)
-                    elif xrz % h == 0 and xrz != xup:  # попал на столбец
-                        if not ((cell - 1) in cell_list):
-                            cell_list.append(cell - 1)
-                        if not (cell in cell_list):
-                            cell_list.append(cell)
+                    # elif yrz % h == 0 and xrz == xup:  # случай попадения на строку и край х
+                    #     if not ((cell - 1) in cell_list):
+                    #         cell_list.append(cell - 1)
+                    #     if not ((cell - 1 - leng) in cell_list):
+                    #         cell_list.append(cell - leng - 1)
+                    # elif xrz == xup:  # случай попадения на столбец
+                    #     if not ((cell - 1) in cell_list):
+                    #         cell_list.append(cell - 1)
+                    # elif xrz % h == 0 and xrz != xup:  # попал на столбец
+                    #     if not ((cell - 1) in cell_list):
+                    #         cell_list.append(cell - 1)
+                    #     if not (cell in cell_list):
+                    #         cell_list.append(cell)
                     elif xrz == xdown:  # попал на левую границу
-                        if not (cell in cell_list):
-                            cell_list.append(cell)
+                        if not ((cell+1) in cell_list):
+                            cell_list.append(cell+1)
                     elif not (cell in cell_list):   # default
                         cell_list.append(cell)
                 xtmp = xckl
@@ -137,7 +138,7 @@ for gh in range(1, (iterc+1)):
     ax = plt.gca()
     for c in nx.strongly_connected_components(G):#, key=len, reverse=True):
         if len(c) > 1:
-            print("Кол-во возвратных вершин для ", gh, "итерации: ", len(c))
+            # print("Кол-во возвратных вершин для ", gh, "итерации: ", len(c))
             alist = list(c)
             for k in range(0, len(alist)):
                 ss = patches.Rectangle((xposition(alist[k], lengx), yposition(alist[k], lengx)), h, h, color = 'blue', fill=True)
